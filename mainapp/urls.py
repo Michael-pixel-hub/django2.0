@@ -1,5 +1,5 @@
 from django.urls import path
-from mainapp.views import MainPageView, CoursesPageView, ContactsPageView, DocSitePageView, LoginPageView, news, newspage
+from mainapp.views import MainPageView, CoursesPageView, ContactsPageView, DocSitePageView, LoginPageView, news_page
 
 app_name = 'mainapp'
 
@@ -9,6 +9,6 @@ urlpatterns = [
     path('contacts/', ContactsPageView.as_view(), name='contacts'),
     path('docsite/', DocSitePageView.as_view(), name='docsite'),
     path('login/', LoginPageView.as_view(), name='login'),
-    path('news/', news, name='news'),
-    path('news/<int:page>', newspage, name='newspage')
+    path('news/', news_page, name='news'),
+    path('news/<int:page>', news_page, name='news_page')
 ]

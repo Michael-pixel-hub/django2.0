@@ -1,0 +1,21 @@
+{% extends 'mainapp/base.html' %}
+
+{% block title %}
+{{ news_object.title|default:"Новости" }}
+{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center pt-3">
+    <div class="col-md-12 col-lg-8">
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title">{{ news_object.title }}</h5>
+                <p class="card-text">
+                    {{ news_object.body }}
+                </p>
+                <a href="https://gbcdn.mrgcdn.ru/uploads/asset/4482368/attachment/%7B%%20url%20'mainapp:news'%20%%7D" class="btn btn-primary">Назад</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}</body></html>
