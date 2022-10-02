@@ -1,48 +1,40 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from datetime import datetime
 from django.core.paginator import Paginator
-from mainapp.models import News
+from mainapp.models import News, Courses, CourseTeachers
 
 
 class MainPageView(TemplateView):
     template_name = "mainapp/index.html"
+    extra_context = {
+        'title': 'Главная'
+    }
 
 
 class ContactsPageView(TemplateView):
     template_name = "mainapp/contacts.html"
+    extra_context = {
+        'title': "Контакты"
+    }
 
 
-# class NewsPageView(TemplateView):
-#     template_name = "mainapp/news.html"
-#     extra_context = {
-#         'products': [{"name": 'Новость 1', "description": 'Описание 1'},
-#                      {"name": 'Новость 2', "description": 'Описание 2'},
-#                      {"name": 'Новость 3', "description": 'Описание 3'},
-#                      {"name": 'Новость 4', "description": 'Описание 4'},
-#                      {"name": 'Новость 5', "description": 'Описание 5'},
-#                      ],
-#
-#         "date": datetime.now(),
-#     }
-
-
-# def news(request):
-#     context = {
-#         "news": News.objects.all()[:2],
-#     }
-#     return render(request, "mainapp/news.html", context)
-
-
-def news_page(request, page=1):
+def news(request, page=1):
     paginator = Paginator(News.objects.all(), 2)
     news_paginator = paginator.page(page)
     context = {
         "news": news_paginator,
+        "title": "Новости"
     }
 
     return render(request, "mainapp/news.html", context)
+
+
+def news_detail(request, page=None, pk=1):
+    context = {
+        'news_object': News.objects.filter(pk=pk)[0],
+    }
+    return render(request, 'mainapp/news_detail.html', context)
 
 
 class LoginPageView(TemplateView):
@@ -55,3 +47,16 @@ class DocSitePageView(TemplateView):
 
 class CoursesPageView(TemplateView):
     template_name = "mainapp/courses_list.html"
+    extra_context = {
+        'courses': Courses.objects.all(),
+        'title': "Курсы"
+    }
+
+
+def courses_detail(request, pk=None):
+    context = {
+        'course_object': Courses.objects.filter(pk=pk)[0],
+        'teachers': CourseTeachers.objects.all()
+    }
+
+    return render(request, 'mainapp/courses_detail.html', context)
