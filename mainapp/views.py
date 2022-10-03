@@ -37,10 +37,6 @@ def news_detail(request, page=None, pk=1):
     return render(request, 'mainapp/news_detail.html', context)
 
 
-class LoginPageView(TemplateView):
-    template_name = "mainapp/login.html"
-
-
 class DocSitePageView(TemplateView):
     template_name = "mainapp/doc_site.html"
 

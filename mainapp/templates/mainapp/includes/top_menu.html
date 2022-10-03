@@ -25,21 +25,48 @@
                         <a class="nav-link deactivate" href="{% url 'mainapp:course' %}">Курсы</a>
                     {% endif %}
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="ddProfile" role="button" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Профиль
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="ddProfile">
-                        <a class="dropdown-item" href="#">Редактировать профиль</a>
-                        <a class="dropdown-item" href="#">Мои курсы</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Модерация</a>
-                        <a class="dropdown-item" href="#">Административный раздел</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Выход</a>
-                    </div>
-                </li>
+
+                {% if not request.user.is_active %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="ddProfile" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Профиль
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="ddProfile">
+                            <a class="dropdown-item" href="{% url 'authapp:register' %}">Регистрация</a>
+                            <a class="dropdown-item" href="{% url "authapp:login" %}">Вход</a>
+                        </div>
+                    </li>
+                {% elif request.user.is_staff %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="ddProfile" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Профиль
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="ddProfile">
+                            <a class="dropdown-item" href="#">Редактировать профиль</a>
+                            <a class="dropdown-item" href="#">Мои курсы</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Модерация</a>
+                            <a class="dropdown-item" href="#">Административный раздел</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url "authapp:logout" %}">Выход</a>
+                        </div>
+                    </li>
+                {% else  %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="ddProfile" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Профиль
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="ddProfile">
+                            <a class="dropdown-item" href="#">Редактировать профиль</a>
+                            <a class="dropdown-item" href="#">Мои курсы</a>
+                            <a class="dropdown-item" href="{% url "authapp:logout" %}">Выход</a>
+                        </div>
+                    </li>
+                {% endif %}
+
                 <li class="nav-item ">
                     {% if request.path == '/contacts/' %}
                         <a class="nav-link active" href="{% url 'mainapp:contacts' %}">Контакты</a>
