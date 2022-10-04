@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp',
-    'authapp'
+    'authapp',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +55,9 @@ ROOT_URLCONF = 'geekb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,6 +66,8 @@ TEMPLATES = [
                 "django.template.context_processors.media",
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -126,7 +131,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # путь к медиа файлам в шаблонах и базовая директория
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Процесс бекэндов для аутентификации пользователя
+AUTHENTICATION_BACKENDS = (
+    "social_core.backends.github.GithubOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+)
 
 # какую модель пользователя использовать в качестве основной
 AUTH_USER_MODEL = "authapp.User"
@@ -138,3 +149,7 @@ LOGOUT_REDIRECT_URL = "mainapp:index"
 # Указываем, что в качестве основного хранилища сообщений (которые выводятся пользователю при авторизации и выходе)
 # используется сессии
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
+
+# Секретные ключи GITHUB
+SOCIAL_AUTH_GITHUB_KEY = 'b5a4fa82154e8e3769bb'
+SOCIAL_AUTH_GITHUB_SECRET = '284bd082acb4cddd8ce288c93ccc0d92bf3ffb35'

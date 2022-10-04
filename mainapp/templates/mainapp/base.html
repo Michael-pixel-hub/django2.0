@@ -21,8 +21,21 @@
 </head>
 
 <body>
-{% include 'mainapp/includes/top_menu.html' %}
-{% include 'authapp/includes/messages.html' %}
+
+    {% include 'mainapp/includes/top_menu.html' %}
+    {% include 'authapp/includes/messages.html' %}
+{#    <div>#}
+{#        {% if messages %}#}
+{#            <ul class="messages">#}
+{#                {% for message in messages %}#}
+{#                    <li class="{{ message.tags }}">#}
+{#                        {{ message|safe }}#}
+{#                        <a href="#" class="close">✖</a>#}
+{#                    </li>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        {% endif %}#}
+{#    </div>#}
     <div class="container-md">
 
 {% block content %}
@@ -103,7 +116,16 @@
 
     <!-- FontAwesome -->
     <script src="{% static "js/fontawesome.all.min.js" %}"></script>
-
+    <!-- Toasts -->
+        <script>
+            $(document).ready(function () {
+                {% if messages %}
+                    // Toasts
+                    $(".toast").toast({ delay: 5000 });
+                    $(".toast").toast("show");
+                {% endif %}
+            });
+        </script>
 
 
 </body>

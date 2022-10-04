@@ -44,7 +44,7 @@
                             Профиль
                         </a>
                         <div class="dropdown-menu" aria-labelledby="ddProfile">
-                            <a class="dropdown-item" href="#">Редактировать профиль</a>
+                            <a class="dropdown-item" href="{% url 'authapp:update' %}">Редактировать профиль</a>
                             <a class="dropdown-item" href="#">Мои курсы</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Модерация</a>
@@ -60,7 +60,7 @@
                             Профиль
                         </a>
                         <div class="dropdown-menu" aria-labelledby="ddProfile">
-                            <a class="dropdown-item" href="#">Редактировать профиль</a>
+                            <a class="dropdown-item" href="{% url 'authapp:update' %}">Редактировать профиль</a>
                             <a class="dropdown-item" href="#">Мои курсы</a>
                             <a class="dropdown-item" href="{% url "authapp:logout" %}">Выход</a>
                         </div>
