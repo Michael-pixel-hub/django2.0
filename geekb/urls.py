@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.contrib.auth import logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('mainapp.urls', namespace='mainapp')),
     path('', include('authapp.urls', namespace='authapp')),
-    path("social_auth/", include("social_django.urls", namespace="social"))
+    path("complete/github/", include("social_django.urls", namespace="social")),
 ]

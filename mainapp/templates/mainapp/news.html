@@ -1,79 +1,100 @@
 {% extends 'mainapp/base.html' %}
 {% load static %}
+{% block title %}{{ title }}{% endblock %}
 {% block content %}
 
-{% block title %}{{ title }}{% endblock %}
+    <div class="row">
 
-<div class="row">
+        <div class="col-lg-8">
+            {% for i in news %}
+                {% if not i.deleted %}
+                    <div class="card my-2">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ i.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ i.created }}</h6>
+                            <p class="card-text">{{ i.body }}</p>
+                            <a href="{% url 'mainapp:news_detail' news.number i.pk %}" class="card-link">Подробнее</a>
+                        </div>
+                        {% if 'mainapp.add_news' in user_permission %}
+                            <div class="col-1 text-center">
+                                <a href="{% url 'mainapp:news_update' pk=i.pk %}">
+                                    <i class="far fa-edit"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% if 'mainapp.delete_news' in user_permission %}
+                            <div class="col-1 text-center">
+                                <a href="{% url 'mainapp:news_delete' pk=i.pk %}">
+                                    <i class="far fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
 
-  <div class="col-lg-8">
-    {% for i in news %}
-        <div class="card my-2">
-          <div class="card-body">
-            <h5 class="card-title">{{ i.title }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ i.created }}</h6>
-            <p class="card-text">{{ i.body }}</p>
-            <a href="{% url 'mainapp:news_detail' news.number i.pk %}" class="card-link">Подробнее</a>
-          </div>
         </div>
-    {% endfor %}
 
-  </div>
+        <div class="col-lg-4">
+            <div class="card my-2 sticky-top">
+                <div class="card-header">
+                    Фильтры
+                </div>
+                <div class="card-body">
+                    <form action="">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Дата от...</span>
+                            </div>
+                            <input type="date" class="form-control" name="dateFrom">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Дата до...</span>
+                            </div>
+                            <input type="date" class="form-control" name="dateTo">
+                        </div>
 
-  <div class="col-lg-4">
-    <div class="card my-2 sticky-top">
-      <div class="card-header">
-        Фильтры
-      </div>
-      <div class="card-body">
-        <form action="">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Дата от...</span>
+                        <button type="submit" class="btn btn-primary btn-block">Фильтровать</button>
+                    </form>
+                </div>
             </div>
-            <input type="date" class="form-control" name="dateFrom">
-          </div>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Дата до...</span>
-            </div>
-            <input type="date" class="form-control" name="dateTo">
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block">Фильтровать</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div class="row justify-content-center align-items-center mt-3 mb-n3">
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-        {% if news.has_previous %}
-            <li class="page-item"><a class="page-link" href="{{ news.previous_page_number }}">Previous</a></li>
-        {% else %}
-            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-        {% endif %}
-
-        <li class="page-item">
-        {% for i in news.paginator.page_range %}
-            {% if news.number == i %}
-                <li class="page-item active"><a class="page-link" href="{% url "mainapp:news_page" i %}">{{ i }}</a></li>
-            {% else %}
-                <li class="page-item"><a class="page-link" href="{% url "mainapp:news_page" i %}">{{ i }}</a></li>
+            {% if 'mainapp.add_news' in user_permission %}
+                <a class="btn btn-primary btn-block" role="button"
+                   href="{% url 'mainapp:news_create' %}">Добавить новость</a>
             {% endif %}
-        {% endfor %}
+        </div>
 
-        {% if news.has_next %}
-            <li class="page-item"><a class="page-link" href="{{ news.next_page_number }}">Next</a></li>
-        {% else %}
-            <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-        {% endif %}
-    </ul>
-  </nav>
-</div>
+    </div>
+
+    <div class="row justify-content-center align-items-center mt-3 mb-n3">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if news.has_previous %}
+                    <li class="page-item"><a class="page-link" href="{{ news.previous_page_number }}">Previous</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                {% endif %}
+
+                <li class="page-item">
+                    {% for i in news.paginator.page_range %}
+                        {% if news.number == i %}
+                            <li class="page-item active"><a class="page-link"
+                                                            href="{% url "mainapp:news_page" i %}">{{ i }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link"
+                                                     href="{% url "mainapp:news_page" i %}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                {% if news.has_next %}
+                    <li class="page-item"><a class="page-link" href="{{ news.next_page_number }}">Next</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
 
 
 

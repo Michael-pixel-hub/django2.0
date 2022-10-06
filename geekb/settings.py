@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'mainapp',
     'authapp',
     'social_django',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-
+            os.path.join(BASE_DIR, "templates"),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -151,5 +152,8 @@ LOGOUT_REDIRECT_URL = "mainapp:index"
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 # Секретные ключи GITHUB
-SOCIAL_AUTH_GITHUB_KEY = 'b5a4fa82154e8e3769bb'
-SOCIAL_AUTH_GITHUB_SECRET = '284bd082acb4cddd8ce288c93ccc0d92bf3ffb35'
+SOCIAL_AUTH_GITHUB_KEY = '02d865204969a805bd74'
+SOCIAL_AUTH_GITHUB_SECRET = '228b85555b5e99b5b3c70a198029dccf9551a72f'
+
+# Настройка для указания CSS стиля в криспи
+CRISPY_TEMPLATE_PACK = "bootstrap4"
