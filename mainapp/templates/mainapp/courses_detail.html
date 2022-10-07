@@ -1,12 +1,16 @@
 {% extends 'mainapp/base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load cache %}
+
+
 
 {#markdownify#}
 
 {% block title %}{{ course_object.name }}{% endblock title %}
 
 {% block content %}
+    {% cache 300 course_object %}
     <h1 class="mt-2">
         {{ course_object.name }}
     </h1>
@@ -58,7 +62,7 @@
         </div>
     </div>
     <div class="accordion" id="accordionLessons">
-
+    {% endcache %}
         {% for item in lessons %}
             <div class="card">
                 <div class="card-header" id="headLessonPk{{ item.pk }}">
