@@ -37,7 +37,7 @@
                             <a class="dropdown-item" href="{% url "authapp:login" %}">Вход</a>
                         </div>
                     </li>
-                {% elif request.user.is_staff %}
+                {% elif user.is_superuser %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="ddProfile" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
@@ -48,12 +48,14 @@
                             <a class="dropdown-item" href="#">Мои курсы</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Модерация</a>
-                            <a class="dropdown-item" href="#">Административный раздел</a>
+                            <a class="dropdown-item" href="{% url 'admin:index' %}">Административный раздел</a>
+                            <a class="dropdown-item" href="{% url 'mainapp:log_view' %}"
+                           target="_blank">Лог</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url "authapp:logout" %}">Выход</a>
                         </div>
                     </li>
-                {% else  %}
+                {% else %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="ddProfile" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
