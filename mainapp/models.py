@@ -92,7 +92,7 @@ class CourseFeedback(models.Model):
     rating = models.SmallIntegerField(
         choices=RATING, default=5, verbose_name=_('Rating')
     )
-    created = models.DateTimeField(auto_now_add=True, verbose_name='Created')
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     deleted = models.BooleanField(default=False)
 
     def __str__(self):

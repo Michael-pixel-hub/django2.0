@@ -23,8 +23,9 @@ import debug_toolbar
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('mainapp.urls', namespace='mainapp')),
-    path('', include('authapp.urls', namespace='authapp')),
+    path('user/', include('authapp.urls', namespace='authapp')),
     path("complete/github/", include("social_django.urls", namespace="social")),
+    path("i18n/", include("django.conf.urls.i18n")),
 ]
 
 if settings.DEBUG:

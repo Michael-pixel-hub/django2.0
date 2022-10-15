@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from mainapp.views import *
 from django.views.decorators.cache import cache_page
 
@@ -7,8 +7,7 @@ app_name = 'mainapp'
 urlpatterns = [
     path('', MainPageView.as_view(), name='index'),
     path('news/', news, name='news'),
-    path('news/<int:page>/', news, name='news_page'),
-    path('news/<int:page>/<int:pk>/', news_detail, name="news_detail"),
+    path('news/<int:pk>/', news_detail, name="news_detail"),
     path('news/create/', NewsCreateView.as_view(), name='news_create'),
     path("news/<int:pk>/update/", NewsUpdateView.as_view(), name="news_update"),
     path("news/<int:pk>/delete/", NewsDeleteView.as_view(), name="news_delete"),
@@ -16,8 +15,8 @@ urlpatterns = [
     path('courses/<int:pk>/', courses_detail, name='courses_detail'),
     path('feedback_course/', feedback, name='feedback_course'),
     path('contacts/', ContactsPageView.as_view(), name='contacts'),
-    path('docsite/', DocSitePageView.as_view(), name='docsite'),
     path('logview/', LogView.as_view(), name='log_view'),
-    path('logdownload/', LogDownloadView.as_view(), name='log_download')
+    path('logdownload/', LogDownloadView.as_view(), name='log_download'),
+    path('docsite/', DocSitePageView.as_view(), name='docsite'),
 
 ]

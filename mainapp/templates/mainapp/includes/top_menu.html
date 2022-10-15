@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
@@ -13,16 +13,16 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item ">
                     {% if request.path == '/news/' %}
-                        <a class="nav-link active" href="{% url 'mainapp:news' %}">Новости</a>
+                        <a class="nav-link active" href="{% url 'mainapp:news' %}?href=1">{% translate "News" %}</a>
                     {% else %}
-                        <a class="nav-link deactivate" href="{% url 'mainapp:news' %}">Новости</a>
+                        <a class="nav-link deactivate" href="{% url 'mainapp:news' %}?href=1">{% translate "News" %}</a>
                     {% endif %}
                 </li>
                 <li class="nav-item ">
                     {% if request.path == '/courses/' %}
-                        <a class="nav-link active" href="{% url 'mainapp:course' %}">Курсы</a>
+                        <a class="nav-link active" href="{% url 'mainapp:course' %}">{% translate "Course" %}</a>
                     {% else %}
-                        <a class="nav-link deactivate" href="{% url 'mainapp:course' %}">Курсы</a>
+                        <a class="nav-link deactivate" href="{% url 'mainapp:course' %}">{% translate "Course" %}</a>
                     {% endif %}
                 </li>
 
@@ -30,54 +30,73 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="ddProfile" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
-                            Профиль
+                            {% translate "Profile" %}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="ddProfile">
-                            <a class="dropdown-item" href="{% url 'authapp:register' %}">Регистрация</a>
-                            <a class="dropdown-item" href="{% url "authapp:login" %}">Вход</a>
+                            <a class="dropdown-item" href="{% url 'authapp:register' %}">{% translate "Register" %}</a>
+                            <a class="dropdown-item" href="{% url "authapp:login" %}">{% translate "Sign in" %}</a>
                         </div>
                     </li>
                 {% elif user.is_superuser %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="ddProfile" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
-                            Профиль
+                            {% translate "Profile" %}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="ddProfile">
-                            <a class="dropdown-item" href="{% url 'authapp:update' %}">Редактировать профиль</a>
-                            <a class="dropdown-item" href="#">Мои курсы</a>
+                            <a class="dropdown-item"
+                               href="{% url 'authapp:update' %}">{% translate "Edit profile" %}</a>
+                            <a class="dropdown-item" href="#">{% translate "My courses" %}</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Модерация</a>
-                            <a class="dropdown-item" href="{% url 'admin:index' %}">Административный раздел</a>
+                            <a class="dropdown-item" href="#">{% translate "Moderation" %}</a>
+                            <a class="dropdown-item"
+                               href="{% url 'admin:index' %}">{% translate "Administrative department" %}</a>
                             <a class="dropdown-item" href="{% url 'mainapp:log_view' %}"
-                           target="_blank">Лог</a>
+                               target="_blank">{% translate "Log" %}</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url "authapp:logout" %}">Выход</a>
+                            <a class="dropdown-item" href="{% url "authapp:logout" %}">{% translate "Exit" %}</a>
                         </div>
                     </li>
                 {% else %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="ddProfile" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
-                            Профиль
+                            {% translate "Profile" %}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="ddProfile">
-                            <a class="dropdown-item" href="{% url 'authapp:update' %}">Редактировать профиль</a>
-                            <a class="dropdown-item" href="#">Мои курсы</a>
-                            <a class="dropdown-item" href="{% url "authapp:logout" %}">Выход</a>
+                            <a class="dropdown-item"
+                               href="{% url 'authapp:update' %}">{% translate "Edit profile" %}</a>
+                            <a class="dropdown-item" href="#">{% translate "My courses" %}</a>
+                            <a class="dropdown-item" href="{% url "authapp:logout" %}">{% translate "Exit" %}</a>
                         </div>
                     </li>
                 {% endif %}
 
                 <li class="nav-item ">
                     {% if request.path == '/contacts/' %}
-                        <a class="nav-link active" href="{% url 'mainapp:contacts' %}">Контакты</a>
+                        <a class="nav-link active" href="{% url 'mainapp:contacts' %}">{% translate "Contacts" %}</a>
                     {% else %}
-                        <a class="nav-link deactivate" href="{% url 'mainapp:contacts' %}">Контакты</a>
+                        <a class="nav-link deactivate"
+                           href="{% url 'mainapp:contacts' %}">{% translate "Contacts" %}</a>
                     {% endif %}
                 </li>
             </ul>
-            <span><a href="#">🇷🇺</a> <i class="fas fa-grip-lines-vertical"></i> <a href="#">🇬🇧</a></span>
+            <div class="row justify-content-end m-0">
+                <div class="col p-0 border-right">
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input name="language" type="hidden" value="ru">
+                        <button type="submit" class="btn btn-link">🇷🇺</button>
+                    </form>
+                </div>
+                <div class="col p-0 border-left">
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input name="language" type="hidden" value="en">
+                        <button type="submit" class="btn btn-link">🇬🇧</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
