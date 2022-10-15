@@ -25,7 +25,10 @@ def login_user(request):
                                 else request.user.get_username()
                             }
                 messages.add_message(request, messages.INFO, mark_safe(message))
-                return HttpResponseRedirect(reverse("mainapp:index"))
+                if request.GET.get('next'):
+                    return HttpResponseRedirect(request.GET['next'])
+                else:
+                    return HttpResponseRedirect(reverse("mainapp:index"))
         else:
             for _unused, msg in form.error_messages.items():
                 messages.add_message(request, messages.WARNING, mark_safe(f"Something goes worng:<br>{msg}"))

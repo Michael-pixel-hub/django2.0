@@ -22,8 +22,8 @@
 
 <body>
 
-    {% include 'mainapp/includes/top_menu.html' %}
-    {% include 'authapp/includes/messages.html' %}
+{% include 'mainapp/includes/top_menu.html' %}
+{% include 'authapp/includes/messages.html' %}
 {#    <div>#}
 {#        {% if messages %}#}
 {#            <ul class="messages">#}
@@ -36,10 +36,10 @@
 {#            </ul>#}
 {#        {% endif %}#}
 {#    </div>#}
-    <div class="container-md">
+<div class="container-md">
 
-{% block content %}
-{% endblock content %}
+    {% block content %}
+    {% endblock content %}
 
     <!-- Footer -->
 
@@ -117,15 +117,18 @@
     <!-- FontAwesome -->
     <script src="{% static "js/fontawesome.all.min.js" %}"></script>
     <!-- Toasts -->
-        <script>
-            $(document).ready(function () {
-                {% if messages %}
-                    // Toasts
-                    $(".toast").toast({ delay: 5000 });
-                    $(".toast").toast("show");
-                {% endif %}
-            });
-        </script>
+    <script>
+        $(document).ready(function () {
+            {% if messages %}
+                // Toasts
+                $(".toast").toast({delay: 5000});
+                $(".toast").toast("show");
+            {% endif %}
+        });
+    </script>
+
+    {% block js %}
+    {% endblock %}
 
 
 </body>
