@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-&ic+@g1s13jcpxlojbm3ahjfw$+b6dvhi2%loj!09pydjur0%@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -38,6 +38,17 @@ INSTALLED_APPS = [
     'mainapp',
     'authapp',
     'social_django',
+    'crispy_forms',
+    "debug_toolbar",
+]
+
+# использование алгоритма для хеширования паролей
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.ScryptPasswordHasher',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +59,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'django.middleware.locale.LocaleMiddleware',
+    # 'django.core.mail.backends.locmem.EmailBackend',
 ]
 
 ROOT_URLCONF = 'geekb.urls'
@@ -56,7 +70,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-
+            os.path.join(BASE_DIR, "templates"),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -112,6 +126,8 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -151,5 +167,82 @@ LOGOUT_REDIRECT_URL = "mainapp:index"
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 # Секретные ключи GITHUB
-SOCIAL_AUTH_GITHUB_KEY = 'b5a4fa82154e8e3769bb'
-SOCIAL_AUTH_GITHUB_SECRET = '284bd082acb4cddd8ce288c93ccc0d92bf3ffb35'
+SOCIAL_AUTH_GITHUB_KEY = '02d865204969a805bd74'
+SOCIAL_AUTH_GITHUB_SECRET = '228b85555b5e99b5b3c70a198029dccf9551a72f'
+
+# Настройка для указания CSS стиля в криспи
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+# Путь до файла логов
+LOG_FILE = BASE_DIR / 'var' / 'log' / 'main_log.log'
+
+# Настройка логов
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "console": {
+            "format": "[%(asctime)s] [%(module)s] [%(lineno)d] [%(levelname)s] [%(message)s]"
+        },
+    },
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": LOG_FILE,
+            "formatter": "console",
+        },
+        "console": {"class": "logging.StreamHandler", "formatter": "console"},
+    },
+    "loggers": {
+        "django": {"level": "INFO", "handlers": ["console"]},
+        "mainapp": {
+            "level": "DEBUG",
+            "handlers": ["file"],
+        },
+    },
+}
+
+# Внутренние сетевые адреса для debug-toolbar
+if DEBUG:
+    INTERNAL_IPS = [
+        "192.168.1.4",
+        "127.0.0.1",
+    ]
+
+# Backend по-умолчанию для кеш-системы
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
+# Указание брокера и указание бэкенда для результатов выполенния задач
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+# Read about sending email:
+# https://docs.djangoproject.com/en/3.2/topics/email/
+# Full list of email settings:
+# https://docs.djangoproject.com/en/3.2/ref/settings/#email
+# EMAIL_HOST = "localhost"
+# EMAIL_PORT = "25"
+# For debugging: python -m smtpd -n -c DebuggingServer localhost:25
+# EMAIL_HOST_USER = "django@geekshop.local"
+# EMAIL_HOST_PASSWORD = "geekshop"
+# EMAIL_USE_SSL = False
+# If server support TLS:
+# EMAIL_USE_TLS = True
+# Email as files for debug
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = "var/email-messages/"
+
+# путь для файла с переводом сайта
+LOCALE_PATHS = [BASE_DIR / "locale"]
+
+# путь к драйверу для senenium
+SELENIUM_DRIVER_PATH_FF = BASE_DIR / "var" / "selenium" / "geckodriver"
